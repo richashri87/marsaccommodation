@@ -8,21 +8,17 @@ import io.restassured.specification.RequestSpecification;
 
 public class BookingRequest {
 
-	static String baseURI = "https://restful-booker.herokuapp.com/booking";
+	BaseRequest baseRequest = new BaseRequest("/booking");
 
-	static RequestSpecification httpRequest = RestAssured
-			.given()
-			.baseUri(baseURI)
-			.contentType("application/json");
-
-	public static Response createBooking(Booking booking) {
-		Response response = httpRequest.body(booking).post();
-		return response;
+	public Response createBooking(Booking booking) {
+		return baseRequest.create(booking); 				
 	}
-	
-	public static Response getBookingById(int id) {
-		Response response = httpRequest.pathParam("id", id)
-				            .get("/{id}");
-		return response;
+
+	public Response updateBookingById(int bookingId, Booking booking) {
+		return baseRequest.updateById(bookingId, booking);
+	}
+
+	public Response getBookingById(int bookingId) {
+		return baseRequest.getById(bookingId);
 	}
 }
