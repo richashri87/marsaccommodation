@@ -23,7 +23,7 @@ import io.restassured.response.Response;
 public class AppTest
 
 {
-	CreatedBooking createdBooking;
+	static CreatedBooking createdBooking;
 	BookingFaker bookingFaker = new BookingFaker();
 	BookingRequest bookingRequest = new BookingRequest();
 
@@ -33,10 +33,8 @@ public class AppTest
 		
 		Booking requestedBooking = bookingFaker.createFakeBookingData();
 		
-		
 		Response response = bookingRequest.createBooking(requestedBooking);
 		createdBooking = response.as(CreatedBooking.class);
-
 		
 		assertStatusCode(response.getStatusCode(), 200);
 		assertThat("Booking id is null", createdBooking.getBookingid(), notNullValue());
@@ -55,7 +53,20 @@ public class AppTest
 	@Test
 	@Order(2)
 	public void UpdateBookingById() {
-		Response response = bookingRequest.updateBookingById(createdBooking.getBookingid(), bookingFaker.createFakeBookingData());
+		System.out.println(createdBooking);
+		Booking requestedBooking = bookingFaker.createFakeBookingData();
+		Response response = bookingRequest.updateBookingById(createdBooking.getBookingid(), requestedBooking);
+		
+		
+		createdBooking = response.as(CreatedBooking.class);
+		assertStatusCode(response.getStatusCode(), 200);
+		assertThat("firstname is invalid", createdBooking.getBooking().getFirstname(), equalTo(requestedBooking.getFirstname()));
+		assertThat("lastname is invalid", createdBooking.getBooking().getLastname(), equalTo(requestedBooking.getLastname()));
+		assertThat("additional needs is invalid", createdBooking.getBooking().getAdditionalneeds(),
+				equalTo(requestedBooking.getAdditionalneeds()));
+		assertThat("deposit paid is invalid", createdBooking.getBooking().isDepositpaid(),
+				equalTo(requestedBooking.isDepositpaid()));
+		
 		String responseBody = response.getBody().asString();
 		System.out.println("Response Body after update is =>  " + responseBody);
 	}
@@ -64,6 +75,25 @@ public class AppTest
 	@Order(3)
 	public void GetBookingById() {
 		Response response = bookingRequest.getBookingById(createdBooking.getBookingid());
+		
+		CreatedBooking retrievedBooking = response.as(CreatedBooking.class);
+		assertStatusCode(response.getStatusCode(), 200);
+		assertThat("firstname is invalid", createdBooking.getBooking().getFirstname(), equalTo(retrievedBooking.getBooking().getFirstname()));
+		assertThat("lastname is invalid", createdBooking.getBooking().getLastname(), equalTo(retrievedBooking.getBooking().getLastname()));
+		assertThat("additional needs is invalid", createdBooking.getBooking().getAdditionalneeds(),
+				equalTo(retrievedBooking.getBooking().getAdditionalneeds()));
+		assertThat("deposit paid is invalid", createdBooking.getBooking().isDepositpaid(),
+				equalTo(retrievedBooking.getBooking().isDepositpaid()));
+		
+		
+		String responseBody = response.getBody().asString();
+		System.out.println("Response Body is =>  " + responseBody);
+	}
+	
+	@Test
+	@Order(4)
+	public void DeleteBookingById() {
+		Response response = bookingRequest.deleteBookingById(createdBooking.getBookingid());
 		String responseBody = response.getBody().asString();
 		System.out.println("Response Body is =>  " + responseBody);
 	}

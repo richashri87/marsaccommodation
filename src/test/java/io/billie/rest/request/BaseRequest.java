@@ -7,35 +7,47 @@ import io.restassured.specification.RequestSpecification;
 public class BaseRequest {
 	private String baseURI;
 	private RequestSpecification httpRequest;
-	private String basePath;
 
-	BaseRequest(String basePath) {
-		this.basePath = basePath;
+	BaseRequest() {
 		init();
 	}
 
 	void init() {
 		baseURI = "https://restful-booker.herokuapp.com";
-		httpRequest = RestAssured.given().baseUri(baseURI).contentType("application/json").basePath(basePath);
+		httpRequest = RestAssured.given().baseUri(baseURI).contentType("application/json");
 	}
 
-	public Response create(Object object) {
-		Response response = httpRequest.body(object).post();
-		return response;
+	public Response create(Object object,String endpoint) {
+		return httpRequest.basePath(endpoint).body(object).post();
+		
 	}
 
-	public Response getById(int id) {
-		Response response = httpRequest.pathParam("id", id).get("/{id}");
-		return response;
+	public Response getById(int id,String endpoint) {
+		return httpRequest.basePath(endpoint).pathParam("id", id).get("/{id}");
 	}
 
-	public Response updateById(int id, Object object) {
-		Response response = httpRequest.pathParam("id", id).body(object).put("/{id}");
-		return response;
+	public Response updateById(int id, Object object,String endpoint,String authToken) {
+		return httpRequest
+				.basePath(endpoint)
+				.header("Cookie","token="+authToken)
+				.pathParam("id", id)
+				.body(object)
+				.put("/{id}");
+		
 	}
 
-	public Response deleteById(int id) {
-		return null;
+	public Response deleteById(int id,String endpoint,String authToken) {
+		return httpRequest
+				.basePath(endpoint)
+				.header("Cookie","token="+authToken)
+				.pathParam("id", id)
+				.delete("/{id}");
 
 	}
+	
+	public Response getAuthToken(Object object, String endpoint) {
+		return httpRequest.basePath(endpoint).body(object).post();
+	}
+	
+	
 }
