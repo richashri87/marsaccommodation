@@ -27,7 +27,7 @@ public class PropertiesHelper {
 	}
 	
 	private boolean isEnvDefined(String envName) {
-		return EnumUtils.isValidEnum(Environments.class, envName)
+		return EnumUtils.isValidEnum(Environments.class, envName);
 	}
 
 	private enum Environments{
