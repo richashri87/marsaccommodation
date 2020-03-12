@@ -4,7 +4,12 @@ import static io.billie.rest.common.CommonAssertions.assertStatusCode;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
+import org.joda.time.DateTimeComparator;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -98,8 +103,8 @@ public class AppTest
 		assertThat("deposit paid is invalid", actual.isDepositpaid(),
 				equalTo(expected.isDepositpaid()));
 		
-		assertThat("Check in Date is invalid",actual.getBookingdates().getCheckin(),equalTo(expected.getBookingdates().getCheckin()));
-		assertThat("Check Out Date is invalid",actual.getBookingdates().getCheckout(),equalTo(expected.getBookingdates().getCheckout()));
+		assertThat("Check in Date is invalid",actual.getBookingdates().getLocalCheckinDate(),equalTo(expected.getBookingdates().getLocalCheckinDate()));
+		assertThat("Check Out Date is invalid",actual.getBookingdates().getLocalCheckoutDate(),equalTo(expected.getBookingdates().getLocalCheckoutDate()));
 		
 		assertThat("additional needs is invalid", actual.getAdditionalneeds(),
 				equalTo(expected.getAdditionalneeds()));

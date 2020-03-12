@@ -3,6 +3,8 @@ package io.billie.rest.request;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import com.github.javafaker.Faker;
@@ -13,11 +15,14 @@ import io.billie.rest.model.BookingDate;
 public class BookingFaker {
 	
 	Faker faker = new Faker();
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");		
+	
 	
 	public Booking createFakeBookingData() {
 		
-		Date date= faker.date().future(15,TimeUnit.DAYS);
+		Date date= faker
+					.date()
+					.future(15,TimeUnit.DAYS);
 		try {
 			date = simpleDateFormat.parse(simpleDateFormat.format(date));
 		} catch (ParseException e) {
