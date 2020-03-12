@@ -9,11 +9,13 @@ Option#1:
 
 • Go to \src\test\java\io\billie\rest\test package
 
-• Right click on AppTest.java file and run as junit
+• Right click on AppTest.java file and run as junit custom configuration
+     . choose Test runner as jUnit5
+     .put -ea -Denv={custome environment} inside VM arguments for example -Denv=dev
 
-Option#2:
+Option#2: Run test for custom environment configuration (dev in this case):
 • Open command prompt
 
 • Go to project directory
 
-• Type mvn install, once completed type mvn test
+• Type mvn install, once completed type mvn test -Denv=dev
