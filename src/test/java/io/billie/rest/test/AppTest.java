@@ -3,13 +3,7 @@ package io.billie.rest.test;
 import static io.billie.rest.common.CommonAssertions.assertStatusCode;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertTrue;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
-import org.joda.time.DateTimeComparator;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,7 +31,6 @@ public class AppTest
 	public void CreateBooking() {
 		
 		Booking requestedBooking = bookingFaker.createFakeBookingData();
-		System.out.println("Requested Check in Date"+requestedBooking.getBookingdates().getCheckin());
 		
 		Response response = bookingRequest.createBooking(requestedBooking);
 		createdBooking = response.as(CreatedBooking.class);
@@ -46,10 +39,6 @@ public class AppTest
 		
 		assertStatusCode(response.getStatusCode(), 200);
 		assertBooking(createdBooking.getBooking(), requestedBooking);
-		//assertThat(createdBooking).isEqualToComparingFieldByField(requestedBooking);
-		String responseBody = response.getBody().asString();
-		System.out.println("Response Body is =>  " + responseBody);
-
 	}
 
 	@Test
@@ -63,8 +52,6 @@ public class AppTest
 		createdBooking.setBooking(response.as(Booking.class));
 		assertStatusCode(response.getStatusCode(), 200);
 		assertBooking(createdBooking.getBooking(), requestedBooking);
-		String responseBody = response.getBody().asString();
-		System.out.println("Response Body after update is =>  " + responseBody);
 	}
 
 	@Test
@@ -74,10 +61,7 @@ public class AppTest
 		
 		Booking retrievedBooking = response.as(Booking.class);
 		assertStatusCode(response.getStatusCode(), 200);
-		assertBooking(createdBooking.getBooking(), retrievedBooking);
-		
-		String responseBody = response.getBody().asString();
-		System.out.println("Response Body after get is =>  " + responseBody);
+		assertBooking(createdBooking.getBooking(), retrievedBooking);	
 	}
 	
 	@Test
@@ -90,9 +74,6 @@ public class AppTest
 		response = bookingRequest.getBookingById(createdBooking.getBookingid());
 		
 		assertStatusCode(response.getStatusCode(), 404);
-		
-		String responseBody = response.getBody().asString();
-		System.out.println("Response Body after delete is =>  " + responseBody);
 	}
 	
 	public void assertBooking(Booking actual, Booking expected) {

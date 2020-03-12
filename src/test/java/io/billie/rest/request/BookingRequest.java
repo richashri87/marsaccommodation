@@ -2,6 +2,7 @@ package io.billie.rest.request;
 
 import io.billie.rest.model.AuthCredential;
 import io.billie.rest.model.Booking;
+import io.billie.rest.utils.PropertiesHelper;
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
@@ -20,9 +21,8 @@ public class BookingRequest {
 	}
 
 	public Response updateBookingById(int bookingId, Booking booking) {
-		AuthCredential auth = new AuthCredential("admin","password123");
-		Response response = baseRequest.getAuthToken(auth,AUTH_ENDPOINT);
-		String authToken = response.jsonPath().getString("token");
+		;
+		String authToken = setupAuth().jsonPath().getString("token");
 		return baseRequest.updateById(bookingId, booking,BOOKING_ENDPOINT,authToken);
 	}
 
@@ -31,9 +31,14 @@ public class BookingRequest {
 	}
 	
 	public Response deleteBookingById(int bookingId) {
-		AuthCredential auth = new AuthCredential("admin","password123");
-		Response response = baseRequest.getAuthToken(auth,AUTH_ENDPOINT);
-		String authToken = response.jsonPath().getString("token");
+		String authToken = setupAuth().jsonPath().getString("token");
 		return baseRequest.deleteById(bookingId, BOOKING_ENDPOINT, authToken);
+	}
+	
+	public Response setupAuth() {
+		PropertiesHelper propertiesHelper = new PropertiesHelper();
+		AuthCredential auth = new AuthCredential(propertiesHelper.readEnvironmentPropertyFile().getProperty("authuser"),
+				propertiesHelper.readEnvironmentPropertyFile().getProperty("authpassword"));
+		return baseRequest.getAuthToken(auth,AUTH_ENDPOINT);
 	}
 }

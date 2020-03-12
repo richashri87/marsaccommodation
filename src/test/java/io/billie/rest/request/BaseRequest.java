@@ -1,5 +1,6 @@
 package io.billie.rest.request;
 
+import io.billie.rest.utils.PropertiesHelper;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -13,7 +14,8 @@ public class BaseRequest {
 	}
 
 	void init() {
-		baseURI = "https://restful-booker.herokuapp.com";
+		PropertiesHelper propertiesHelper = new PropertiesHelper();
+		baseURI = propertiesHelper.readEnvironmentPropertyFile().getProperty("baseURI");
 		httpRequest = RestAssured.given().baseUri(baseURI).contentType("application/json");
 	}
 
