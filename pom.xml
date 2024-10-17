@@ -14,7 +14,7 @@
 		<junit.jupiter.version>5.5.1</junit.jupiter.version>
 		<junit.engine.version>5.5.1</junit.engine.version>
 		<junit.platform.version>1.5.1</junit.platform.version>
-		<groovy.version>3.0.1</groovy.version>
+		<groovy.version>3.0.7</groovy.version>
 		<lombok.version>1.18.2</lombok.version>
 		<faker.version>1.0.1</faker.version>
 	</properties>
